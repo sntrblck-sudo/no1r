@@ -33,23 +33,32 @@ def save_state(state):
         json.dump(state, f, indent=2)
 
 def check_clawhub():
-    """Check for interesting new skills"""
+    """Check for interesting new skills via CLI"""
     insights = []
     
     # Search queries to try
     queries = ["monitoring", "automation", "backup", "health", "productivity"]
     
-    for query in queries:
+    for query in queries[:3]:
         try:
-            url = f"https://api.clawhub.com/skills/search?q={urllib.parse.quote(query)}&limit=3"
-            with urlopen(url, timeout=10) as r:
-                results = json.loads(r.read().decode())
-                for skill in results.get("skills", [])[:2]:
-                    insights.append(f"Skill: {skill.get('name')} - {skill.get('description', '')[:80]}")
+            result = subprocess.run(
+                ["clawhub", "search", query, "--limit", "2"],
+                capture_output=True, text=True, timeout=15, cwd=str(WORKSPACE)
+            )
+            if result.returncode == 0:
+                lines = result.stdout.strip().split("\n")[1:]  # Skip first line
+                for line in lines:
+                    line = line.strip()
+                    if line and not line.startswith("-"):
+                        # Format: "skill-name  Description  (score)"
+                        parts = line.split()
+                        if parts:
+                            name = parts[0]
+                            insights.append(f"Skill: {name}")
         except Exception as e:
             log(f"ClawHub search failed: {e}")
     
-    return insights[:5]
+    return list(set(insights))[:5]  # Dedupe
 
 def analyze_sentinel():
     """Analyze Sentinel's learned patterns"""
