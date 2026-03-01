@@ -1,0 +1,105 @@
+[2026-03-01T03:30:50.121823] ==================================================
+[2026-03-01T03:30:50.122344] Model Health Check Started
+[2026-03-01T03:30:50.122409] Testing openai/gpt-5.1-codex-mini...
+[2026-03-01T03:30:56.600531]   ✗ openai/gpt-5.1-codex-mini: Exit code 1: error: unknown command 'chat'
+
+[2026-03-01T03:30:56.600657] Testing minimax-portal/MiniMax-M2.5...
+[2026-03-01T03:31:03.095552]   ✗ minimax-portal/MiniMax-M2.5: Exit code 1: error: unknown command 'chat'
+
+[2026-03-01T03:31:03.095658] Testing openrouter/google/gemma-3-27b-it:free...
+[2026-03-01T03:31:09.398208]   ✗ openrouter/google/gemma-3-27b-it:free: Exit code 1: error: unknown command 'chat'
+
+[2026-03-01T03:31:09.398597] Health check complete. Failures: True
+[2026-03-01T03:31:09.398667] ALERT: Failed models: ['openai/gpt-5.1-codex-mini', 'minimax-portal/MiniMax-M2.5', 'openrouter/google/gemma-3-27b-it:free']
+[2026-03-01T03:32:00.964766] ==================================================
+[2026-03-01T03:32:00.964899] Model Health Check Started
+[2026-03-01T03:32:00.964963] Testing openai/gpt-5.1-codex-mini...
+[2026-03-01T03:32:04.607628]   ✗ openai/gpt-5.1-codex-mini: Exit code 1: error: unknown option '--model'
+
+[2026-03-01T03:32:04.607771] Testing minimax-portal/MiniMax-M2.5...
+[2026-03-01T03:32:08.331592]   ✗ minimax-portal/MiniMax-M2.5: Exit code 1: error: unknown option '--model'
+
+[2026-03-01T03:32:08.332143] Testing openrouter/google/gemma-3-27b-it:free...
+[2026-03-01T03:32:12.000344]   ✗ openrouter/google/gemma-3-27b-it:free: Exit code 1: error: unknown option '--model'
+
+[2026-03-01T03:32:12.000669] Health check complete. Failures: True
+[2026-03-01T03:32:12.000744] ALERT: Failed models: ['openai/gpt-5.1-codex-mini', 'minimax-portal/MiniMax-M2.5', 'openrouter/google/gemma-3-27b-it:free']
+[2026-03-01T03:33:15.209068] ==================================================
+[2026-03-01T03:33:15.209184] Model Health Check Started
+[2026-03-01T03:33:15.209228] Testing gateway connectivity...
+[2026-03-01T03:33:15.242916]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T03:33:15.243032] Testing default model...
+[2026-03-01T03:33:18.978617]   ✗ Default model: Exit 1: Gateway agent failed; falling back to embedded: Error: Pass --to <E.164>, --session-id, or --agent t
+[2026-03-01T03:33:18.979550] Health check complete. Failures: True
+[2026-03-01T03:33:18.979632] ALERT: Failed checks: ['default_model']
+[2026-03-01T03:33:31.065299] ==================================================
+[2026-03-01T03:33:31.065404] Model Health Check Started
+[2026-03-01T03:33:31.065447] Testing gateway connectivity...
+[2026-03-01T03:33:31.081527]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T03:33:31.081757] Testing default model...
+[2026-03-01T03:35:01.192129]   ✗ Default model: Timeout
+[2026-03-01T03:35:01.193543] Health check complete. Failures: True
+[2026-03-01T03:35:01.193871] ALERT: Failed checks: ['default_model']
+[2026-03-01T03:35:38.249510] ==================================================
+[2026-03-01T03:35:38.249621] Model Health Check Started
+[2026-03-01T03:35:38.249662] Testing gateway connectivity...
+[2026-03-01T03:35:38.261149]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T03:35:38.261247] Testing default model...
+[2026-03-01T03:35:41.779740]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 2
+[2026-03-01T03:35:41.780095] Health check complete. Failures: False
+[2026-03-01T04:35:55.413827] ==================================================
+[2026-03-01T04:35:55.413949] Model Health Check Started
+[2026-03-01T04:35:55.413991] Testing gateway connectivity...
+[2026-03-01T04:35:55.438361]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T04:35:55.438460] Testing default model...
+[2026-03-01T04:35:59.514056]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T04:35:59.521044] Health check complete. Failures: False
+[2026-03-01T05:35:55.988300] ==================================================
+[2026-03-01T05:35:55.988435] Model Health Check Started
+[2026-03-01T05:35:55.988475] Testing gateway connectivity...
+[2026-03-01T05:35:56.003265]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T05:35:56.003387] Testing default model...
+[2026-03-01T05:35:59.389182]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T05:35:59.390187] Health check complete. Failures: False
+[2026-03-01T06:35:59.810832] ==================================================
+[2026-03-01T06:35:59.810953] Model Health Check Started
+[2026-03-01T06:35:59.810994] Testing gateway connectivity...
+[2026-03-01T06:35:59.825590]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T06:35:59.825706] Testing default model...
+[2026-03-01T06:36:03.333326]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T06:36:03.333924] Health check complete. Failures: False
+[2026-03-01T07:35:55.191938] ==================================================
+[2026-03-01T07:35:55.192243] Model Health Check Started
+[2026-03-01T07:35:55.192354] Testing gateway connectivity...
+[2026-03-01T07:35:55.211835]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T07:35:55.212026] Testing default model...
+[2026-03-01T07:35:58.860829]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T07:35:58.861233] Health check complete. Failures: False
+[2026-03-01T08:35:55.411008] ==================================================
+[2026-03-01T08:35:55.411898] Model Health Check Started
+[2026-03-01T08:35:55.411960] Testing gateway connectivity...
+[2026-03-01T08:35:55.425069]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T08:35:55.425171] Testing default model...
+[2026-03-01T08:35:58.576260]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T08:35:58.580987] Health check complete. Failures: False
+[2026-03-01T09:36:01.415401] ==================================================
+[2026-03-01T09:36:01.415512] Model Health Check Started
+[2026-03-01T09:36:01.415554] Testing gateway connectivity...
+[2026-03-01T09:36:01.427997]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T09:36:01.428099] Testing default model...
+[2026-03-01T09:36:04.654272]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T09:36:04.654610] Health check complete. Failures: False
+[2026-03-01T10:35:54.779725] ==================================================
+[2026-03-01T10:35:54.779837] Model Health Check Started
+[2026-03-01T10:35:54.779879] Testing gateway connectivity...
+[2026-03-01T10:35:54.794771]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T10:35:54.795259] Testing default model...
+[2026-03-01T10:35:58.193238]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T10:35:58.193570] Health check complete. Failures: False
+[2026-03-01T11:36:08.864662] ==================================================
+[2026-03-01T11:36:08.864776] Model Health Check Started
+[2026-03-01T11:36:08.864824] Testing gateway connectivity...
+[2026-03-01T11:36:08.877424]   ✓ Gateway: Gateway OK (HTTP 200)
+[2026-03-01T11:36:08.877515] Testing default model...
+[2026-03-01T11:36:12.440069]   ✓ Default model: Default: openai/gpt-5.1-codex-mini, Fallbacks: 4
+[2026-03-01T11:36:12.440380] Health check complete. Failures: False

@@ -1,0 +1,16 @@
+{
+  "last_check": "2026-03-01T11:36:12.440188",
+  "results": {
+    "gateway": {
+      "success": true,
+      "info": "Gateway OK (HTTP 200)",
+      "timestamp": "2026-03-01T11:36:08.877410"
+    },
+    "default_model": {
+      "success": true,
+      "info": "Default: openai/gpt-5.1-codex-mini, Fallbacks: 4",
+      "timestamp": "2026-03-01T11:36:12.440052"
+    }
+  },
+  "any_failures": false
+}

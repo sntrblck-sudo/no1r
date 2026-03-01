@@ -1,0 +1,14 @@
+{
+  "started": "2026-03-01T16:32:31.919509Z",
+  "pid": 28031,
+  "restarts": 0,
+  "failures": 0,
+  "last_learning_update": "2026-03-01T13:14:29.513514Z",
+  "method_preferences": {},
+  "cost_threshold": 1.0,
+  "daily_costs": [
+    0.0019725,
+    0.00189375,
+    0.00222375
+  ]
+}
