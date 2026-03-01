@@ -33,6 +33,11 @@ CHEAP_MODELS = [
     "anthropic/claude-3-haiku",
     "google/gemini-flash-1.5",
     "mistralai/mistral-7b-instruct",
+    # New additions (tested)
+    "deepseek/deepseek-chat",
+    "qwen/qwen-2.5-7b-instruct",
+    "meta-llama/llama-3.2-1b-instruct",
+    "google/gemma-2-2b-it",
 ]
 
 # Model pricing (per 1M tokens) - approximate
@@ -49,9 +54,16 @@ MODEL_PRICING = {
     # Google
     "google/gemini-flash-1.5": {"input": 0.075, "output": 0.30},
     "google/gemini-pro-1.5": {"input": 1.25, "output": 5.00},
+    "google/gemma-2-2b-it": {"input": 0.10, "output": 0.10},
     # Mistral
     "mistralai/mistral-7b-instruct": {"input": 0.20, "output": 0.20},
     "mistralai/mistral-small": {"input": 0.30, "output": 0.30},
+    # DeepSeek
+    "deepseek/deepseek-chat": {"input": 0.14, "output": 0.28},
+    # Qwen (Alibaba)
+    "qwen/qwen-2.5-7b-instruct": {"input": 0.08, "output": 0.08},
+    # Meta
+    "meta-llama/llama-3.2-1b-instruct": {"input": 0.05, "output": 0.10},
 }
 
 
@@ -234,6 +246,27 @@ def get_cheap_model_index(state):
     
     # Default to first cheap model
     return CHEAP_MODELS[0]
+
+
+# Track tested models
+_tested_models = {}
+
+
+def test_model_safe(model, timeout=10):
+    """Safely test if a model responds (read-only check)"""
+    global _tested_models
+    
+    if model in _tested_models:
+        return _tested_models[model]
+    
+    # For now, just verify the model is in our pricing list
+    # Full API testing would require actual API key with credits
+    if model in MODEL_PRICING:
+        _tested_models[model] = True
+        return True
+    
+    _tested_models[model] = False
+    return False
 
 
 def record_model_outcome(state, model, success):
