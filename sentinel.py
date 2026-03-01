@@ -125,6 +125,36 @@ def rotate_logs(log_path):
     log(f"Log rotated (max {MAX_LOG_SIZE_MB}MB)")
 
 
+def queue_alert(message, alert_type="custom"):
+    """Queue an alert for Telegram"""
+    alert_file = STATE_FILE.parent / ".pending_alerts.json"
+    
+    try:
+        # Read existing
+        if alert_file.exists():
+            with open(alert_file) as f:
+                alerts = json.load(f)
+        else:
+            alerts = []
+        
+        # Add new
+        alerts.append({
+            "type": alert_type,
+            "message": message,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        })
+        
+        # Keep only last 10
+        alerts = alerts[-10:]
+        
+        # Write back
+        with open(alert_file, "w") as f:
+            json.dump(alerts, f)
+    
+    except Exception as e:
+        log(f"Failed to queue alert: {e}")
+
+
 def load_state():
     if STATE_FILE.exists():
         with open(STATE_FILE) as f:
@@ -248,6 +278,7 @@ def check_usage_alerts(state):
         if pct >= threshold and not _alerts_sent.get(key):
             msg = f"⚠️ COST ALERT: {pct:.1f}% of daily budget used (${today_cost:.2f}/${daily_limit:.2f})"
             log(msg)
+            queue_alert(msg, "cost")
             _alerts_sent[key] = True
     
     # Reset alerts if new day
@@ -474,6 +505,7 @@ def main():
                 state, healed = heal_gateway(state)
                 if not healed:
                     log("WARNING: Heal failed, will retry next cycle")
+                    queue_alert("⚠️ Gateway heal failed - manual intervention may be needed", "health")
             
             # Hourly heartbeat
             if now - last_heartbeat > timedelta(hours=1):
