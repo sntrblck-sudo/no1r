@@ -728,6 +728,20 @@ def heartbeat(state):
         log(f"⚠️ Latency spike detected: {latency}ms (avg={state.get('latency_stats',{}).get('avg',0):.0f}ms)")
         queue_alert(f"⚠️ Latency spike: {latency:.0f}ms", "health")
     
+    # Resource monitoring (disk/memory) - using shell commands
+    try:
+        # Check disk usage
+        disk_pct = int(os.popen("df / | tail -1 | awk '{print $5}' | sed 's/%//'").read().strip())
+        if disk_pct >= 80:
+            queue_alert(f"⚠️ Disk at {disk_pct}%", "health")
+        
+        # Check memory usage
+        mem_pct = int(os.popen("free | grep Mem | awk '{print int($3/$2*100)}'").read().strip())
+        if mem_pct >= 90:
+            queue_alert(f"⚠️ Memory at {mem_pct}%", "health")
+    except Exception:
+        pass  # Skip if commands fail
+    
     log(f"Heartbeat: gateway={tier} latency={latency}ms failures={state['failures']} restarts={state['restarts']}")
     return state
 

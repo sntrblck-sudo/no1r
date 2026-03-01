@@ -110,3 +110,15 @@ NameError: name 'log' is not defined
 [2026-03-01T20:44:36.606552Z] === Sentinel v2 Starting ===
 [2026-03-01T20:44:36.610797Z] Health server listening on port 18799
 [2026-03-01T20:44:36.610797Z] Health server listening on port 18799
+[2026-03-01T21:16:32.420165Z] Received signal 15, shutting down...
+[2026-03-01T21:16:32.420165Z] Received signal 15, shutting down...
+[2026-03-01T21:16:32.546066Z] === Sentinel v2 Starting ===
+[2026-03-01T21:16:32.546066Z] === Sentinel v2 Starting ===
+[2026-03-01T21:16:32.551684Z] Health server listening on port 18799
+[2026-03-01T21:16:32.551684Z] Health server listening on port 18799
+[2026-03-01T21:17:26.689254Z] Received signal 15, shutting down...
+[2026-03-01T21:17:26.689254Z] Received signal 15, shutting down...
+[2026-03-01T21:17:26.805071Z] === Sentinel v2 Starting ===
+[2026-03-01T21:17:26.805071Z] === Sentinel v2 Starting ===
+[2026-03-01T21:17:26.812100Z] Health server listening on port 18799
+[2026-03-01T21:17:26.812100Z] Health server listening on port 18799
