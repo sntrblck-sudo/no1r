@@ -128,3 +128,5 @@ NameError: name 'log' is not defined
 [2026-03-01T22:02:41.430377Z] Health server listening on port 18799
 [2026-03-01T22:02:41.435807Z] === Sentinel v2 Starting ===
 [2026-03-01T22:02:41.435807Z] === Sentinel v2 Starting ===
+[2026-03-01T22:07:41.491447Z] ⚠️ Latency spike: 22.635459899902344ms (avg=10ms)
+[2026-03-01T22:07:41.491447Z] ⚠️ Latency spike: 22.635459899902344ms (avg=10ms)
