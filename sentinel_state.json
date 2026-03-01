@@ -1,8 +1,8 @@
 {
-  "started": "2026-03-01T17:14:11.515430Z",
-  "pid": 29763,
+  "started": "2026-03-01T20:44:36.607132Z",
+  "pid": 32674,
   "restarts": 0,
-  "failures": 0,
+  "failures": 1,
   "last_learning_update": "2026-03-01T13:14:29.513514Z",
   "method_preferences": {},
   "cost_threshold": 1.0,
@@ -17,5 +17,20 @@
     0.00170625,
     0.00239875,
     0.0018174999999999999
-  ]
+  ],
+  "learned_thresholds": {
+    "model_switch_pct": 70,
+    "alert_pct": 50,
+    "proactive_restart_failures": 3
+  },
+  "latency_stats": {
+    "samples": [
+      20.449399948120117,
+      4.279375076293945,
+      5.131244659423828,
+      14.511585235595703
+    ],
+    "spike_threshold": 22.185802459716797,
+    "avg": 11.092901229858398
+  }
 }

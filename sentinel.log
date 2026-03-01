@@ -42,3 +42,71 @@
 [2026-03-01T17:13:55.864305Z] Received signal 15, shutting down...
 [2026-03-01T17:14:11.513416Z] === Sentinel v2 Starting ===
 [2026-03-01T17:14:11.513416Z] === Sentinel v2 Starting ===
+[2026-03-01T17:44:11.441299Z] Received signal 15, shutting down...
+[2026-03-01T17:44:11.441299Z] Received signal 15, shutting down...
+[2026-03-01T19:51:46.042830Z] === Sentinel v2 Starting ===
+[2026-03-01T19:51:46.042830Z] === Sentinel v2 Starting ===
+[2026-03-01T20:01:46.604572Z] Received signal 15, shutting down...
+[2026-03-01T20:01:46.604572Z] Received signal 15, shutting down...
+[2026-03-01T20:01:46.724272Z] === Sentinel v2 Starting ===
+[2026-03-01T20:01:46.724272Z] === Sentinel v2 Starting ===
+[2026-03-01T20:20:00.028130Z] Received signal 15, shutting down...
+[2026-03-01T20:20:00.028130Z] Received signal 15, shutting down...
+Exception in thread Thread-1 (start_health_server):
+Traceback (most recent call last):
+  File "/home/sntrblck/.openclaw/workspace/sentinel.py", line 76, in start_health_server
+    log(f"Health server listening on port {port}")
+    ^^^
+NameError: name 'log' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+[2026-03-01T20:20:00.158265Z] === Sentinel v2 Starting ===
+[2026-03-01T20:20:00.158265Z] === Sentinel v2 Starting ===
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/sntrblck/.openclaw/workspace/sentinel.py", line 79, in start_health_server
+    log(f"Health server failed: {e}")
+    ^^^
+NameError: name 'log' is not defined
+[2026-03-01T20:21:43.045199Z] Received signal 15, shutting down...
+[2026-03-01T20:21:43.045199Z] Received signal 15, shutting down...
+[2026-03-01T20:21:43.189287Z] === Sentinel v2 Starting ===
+[2026-03-01T20:21:43.191349Z] Health server listening on port 18799
+[2026-03-01T20:21:43.191349Z] Health server listening on port 18799
+[2026-03-01T20:21:43.189287Z] === Sentinel v2 Starting ===
+[2026-03-01T20:25:13.925372Z] Received signal 15, shutting down...
+[2026-03-01T20:25:13.925372Z] Received signal 15, shutting down...
+[2026-03-01T20:25:14.047462Z] === Sentinel v2 Starting ===
+[2026-03-01T20:25:14.047462Z] === Sentinel v2 Starting ===
+[2026-03-01T20:25:14.051149Z] Health server listening on port 18799
+[2026-03-01T20:25:14.051149Z] Health server listening on port 18799
+[2026-03-01T20:39:54.169921Z] Received signal 15, shutting down...
+[2026-03-01T20:39:54.169921Z] Received signal 15, shutting down...
+[2026-03-01T20:39:54.311304Z] Health server listening on port 18799
+[2026-03-01T20:39:54.311304Z] Health server listening on port 18799
+[2026-03-01T20:39:54.325501Z] === Sentinel v2 Starting ===
+[2026-03-01T20:39:54.325501Z] === Sentinel v2 Starting ===
+[2026-03-01T20:40:36.448597Z] Received signal 15, shutting down...
+[2026-03-01T20:40:36.448597Z] Received signal 15, shutting down...
+[2026-03-01T20:40:36.587976Z] === Sentinel v2 Starting ===
+[2026-03-01T20:40:36.587976Z] === Sentinel v2 Starting ===
+[2026-03-01T20:40:36.598763Z] Health server listening on port 18799
+[2026-03-01T20:40:36.598763Z] Health server listening on port 18799
+[2026-03-01T20:40:36.621501Z] Error: 'int' object has no attribute 'get'
+[2026-03-01T20:40:36.621501Z] Error: 'int' object has no attribute 'get'
+[2026-03-01T20:43:07.096153Z] Received signal 15, shutting down...
+[2026-03-01T20:43:07.096153Z] Received signal 15, shutting down...
+[2026-03-01T20:43:07.234069Z] Health server listening on port 18799
+[2026-03-01T20:43:07.234069Z] Health server listening on port 18799
+[2026-03-01T20:43:07.235045Z] === Sentinel v2 Starting ===
+[2026-03-01T20:43:07.235045Z] === Sentinel v2 Starting ===
+[2026-03-01T20:44:36.483670Z] Received signal 15, shutting down...
+[2026-03-01T20:44:36.483670Z] Received signal 15, shutting down...
+[2026-03-01T20:44:36.606552Z] === Sentinel v2 Starting ===
+[2026-03-01T20:44:36.606552Z] === Sentinel v2 Starting ===
+[2026-03-01T20:44:36.610797Z] Health server listening on port 18799
+[2026-03-01T20:44:36.610797Z] Health server listening on port 18799

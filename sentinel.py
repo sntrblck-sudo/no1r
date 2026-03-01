@@ -126,6 +126,7 @@ def log(msg):
         pass
 
 
+
 def rotate_logs(log_path):
     """Rotate log files"""
     import shutil
@@ -187,19 +188,90 @@ def queue_alert(message, alert_type="custom"):
 def load_state():
     if STATE_FILE.exists():
         with open(STATE_FILE) as f:
-            return json.load(f)
+            state = json.load(f)
+        
+        # Merge in any new default keys (for schema updates)
+        defaults = {
+            "method_preferences": {},
+            "learned_thresholds": {
+                "model_switch_pct": 70,
+                "alert_pct": 50,
+                "proactive_restart_failures": 3,
+            },
+        }
+        for key, default_val in defaults.items():
+            if key not in state:
+                state[key] = default_val
+        
+        return state
+    
     return {
         "started": datetime.utcnow().isoformat() + "Z",
         "pid": os.getpid(),
         "restarts": 0,
         "failures": 0,
         "last_learning_update": datetime.utcnow().isoformat() + "Z",
-        "method_preferences": {},  # action -> {method: success_rate}
+        "method_preferences": {},
         "cost_threshold": MAX_COST_PER_DAY,
         "daily_costs": [],
-        "current_model": "default",  # Track which model is active
-        "model_tier": "default",  # default, cheap, emergency
+        "current_model": "default",
+        "model_tier": "default",
+        "learned_thresholds": {
+            "model_switch_pct": 70,
+            "alert_pct": 50,
+            "proactive_restart_failures": 3,
+        },
     }
+
+
+# Health check HTTP server (runs in background thread)
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/health":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            state = load_state()
+            started = state.get("started", "")
+            try:
+                uptime = str(datetime.utcnow() - datetime.fromisoformat(started.replace("Z", "+00:00")))
+            except:
+                uptime = "unknown"
+            resp = {
+                "status": "ok" if state.get("pid") else "no pid",
+                "uptime": uptime,
+                "failures": state.get("failures", 0),
+                "restarts": state.get("restarts", 0),
+                "cost_today": sum(state.get("daily_costs", []))
+            }
+            self.wfile.write(json.dumps(resp).encode())
+        elif self.path == "/status":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            state = load_state()
+            self.wfile.write(json.dumps(state, indent=2).encode())
+        else:
+            self.send_response(404)
+            self.end_headers()
+    
+    def log_message(self, format, *args):
+        pass
+
+def start_health_server(port=18799):
+    try:
+        server = HTTPServer(("", port), HealthHandler)
+        log(f"Health server listening on port {port}")
+        server.serve_forever()
+    except Exception as e:
+        log(f"Health server failed: {e}")
+
+# Start health server in background
+health_thread = threading.Thread(target=start_health_server, daemon=True)
+health_thread.start()
 
 
 def save_state(state):
@@ -228,9 +300,12 @@ def should_use_cheap_model(state):
     today_cost = sum(state.get("daily_costs", []))
     daily_limit = state.get("cost_threshold", MAX_COST_PER_DAY)
     
-    # If we've used 70%+ of daily budget, switch to cheap
-    if daily_limit > 0 and today_cost >= daily_limit * 0.7:
-        log(f"Daily budget {today_cost:.2f}/{daily_limit:.2f} (70%), switching to cheap model")
+    # Use learned threshold (default 70%)
+    switch_pct = get_learned_threshold(state, "model_switch_pct", 70)
+    
+    # If we've used X%+ of daily budget, switch to cheap
+    if daily_limit > 0 and today_cost >= daily_limit * (switch_pct / 100):
+        log(f"Daily budget {today_cost:.2f}/{daily_limit:.2f} ({switch_pct}%), switching to cheap model")
         return True
     
     # Check gateway usage if available
@@ -320,10 +395,21 @@ def check_usage_alerts(state):
     
     pct = (today_cost / daily_limit) * 100
     
-    # Alert thresholds
-    thresholds = [50, 80, 90, 100]
+    # Use learned alert threshold (default 50%)
+    alert_pct = get_learned_threshold(state, "alert_pct", 50)
     
-    for threshold in thresholds:
+    # Alert at learned threshold
+    key = str(int(alert_pct))
+    if pct >= alert_pct and not _alerts_sent.get(key):
+        msg = f"⚠️ COST ALERT: {pct:.1f}% of daily budget used (${today_cost:.2f}/${daily_limit:.2f})"
+        log(msg)
+        queue_alert(msg, "cost")
+        _alerts_sent[key] = True
+        # Record outcome - alert was sent (success = user responded/acknowledged)
+        # For now, track that we alerted
+    
+    # Also alert at 80%, 90%, 100% regardless (critical thresholds)
+    for threshold in [80, 90, 100]:
         key = str(threshold)
         if pct >= threshold and not _alerts_sent.get(key):
             msg = f"⚠️ COST ALERT: {pct:.1f}% of daily budget used (${today_cost:.2f}/${daily_limit:.2f})"
@@ -440,6 +526,50 @@ def get_gateway_latency(url):
         return None, False
 
 
+# Latency tracking for pattern learning
+_latency_history = []
+
+def record_latency(state, latency):
+    """Track latency for pattern learning"""
+    global _latency_history
+    
+    if latency is None:
+        return state
+    
+    _latency_history.append({"latency": latency, "timestamp": datetime.utcnow().isoformat()})
+    _latency_history = _latency_history[-100:]  # Keep last 100
+    
+    # Initialize latency tracking in state
+    if "latency_stats" not in state:
+        state["latency_stats"] = {"samples": [], "spike_threshold": 500, "avg": None}
+    
+    stats = state["latency_stats"]
+    stats["samples"].append(latency)
+    stats["samples"] = stats["samples"][-50:]  # Keep last 50
+    
+    # Calculate average
+    if stats["samples"]:
+        stats["avg"] = sum(stats["samples"]) / len(stats["samples"])
+        
+        # Learn spike threshold: if latency > 2x avg, that's a spike
+        if stats["avg"] > 0:
+            stats["spike_threshold"] = stats["avg"] * 2
+    
+    return state
+
+
+def check_latency_spike(state):
+    """Check if current latency is a spike (predictive failure)"""
+    stats = state.get("latency_stats", {})
+    current = _latency_history[-1]["latency"] if _latency_history else None
+    
+    if not current or not stats.get("avg"):
+        return False
+    
+    threshold = stats.get("spike_threshold", 500)
+    return current > threshold
+
+
 def record_outcome(state, action, method, success):
     """Learning: track success/failure per action-method pair"""
     if action not in state["method_preferences"]:
@@ -474,6 +604,51 @@ def get_preferred_method(state, action):
                 best = method
     
     return best
+
+
+def record_threshold_outcome(state, threshold_name, value, success):
+    """Learn from threshold decisions"""
+    if "learned_thresholds" not in state:
+        state["learned_thresholds"] = {}
+    
+    entry = state["learned_thresholds"].get(threshold_name)
+    
+    # Handle old format (int) - convert to new format
+    if entry is None or isinstance(entry, int):
+        state["learned_thresholds"][threshold_name] = {"samples": [], "best": value}
+        entry = state["learned_thresholds"][threshold_name]
+    
+    entry["samples"].append({"value": value, "success": success})
+    
+    # Keep last 20 samples
+    entry["samples"] = entry["samples"][-20:]
+    
+    # Adjust if this value led to failure
+    if not success and threshold_name == "model_switch_pct":
+        # If switching failed, maybe we switched too late - lower threshold
+        entry["best"] = max(30, entry["best"] - 5)
+    elif not success and threshold_name == "alert_pct":
+        # If alert didn't help, maybe alert earlier
+        entry["best"] = max(20, entry["best"] - 10)
+    
+    state["last_learning_update"] = datetime.utcnow().isoformat() + "Z"
+    return state
+
+
+def get_learned_threshold(state, threshold_name, default):
+    """Get best threshold from learning"""
+    if "learned_thresholds" not in state:
+        return default
+    
+    entry = state["learned_thresholds"].get(threshold_name, {})
+    
+    # Handle both old format (int) and new format (dict)
+    if isinstance(entry, int):
+        return entry
+    if isinstance(entry, dict):
+        return entry.get("best", default)
+    
+    return default
 
 
 def heal_gateway(state):
@@ -544,6 +719,15 @@ def heartbeat(state):
     if ok:
         latency, _ = get_gateway_latency(url)
     
+    # Record latency for learning
+    if latency:
+        state = record_latency(state, latency)
+    
+    # Check for latency spike (predictive)
+    if latency and check_latency_spike(state):
+        log(f"⚠️ Latency spike detected: {latency}ms (avg={state.get('latency_stats',{}).get('avg',0):.0f}ms)")
+        queue_alert(f"⚠️ Latency spike: {latency:.0f}ms", "health")
+    
     log(f"Heartbeat: gateway={tier} latency={latency}ms failures={state['failures']} restarts={state['restarts']}")
     return state
 
@@ -574,6 +758,25 @@ def main():
             # Health check with timeout protection
             ok, url, tier = check_gateway_health()
             
+            # Get latency and record for learning
+            latency, _ = get_gateway_latency(url) if ok else (None, False)
+            if latency:
+                state = record_latency(state, latency)
+                
+                # Check for latency spike (predictive failure detection)
+                if check_latency_spike(state):
+                    log(f"⚠️ Latency spike: {latency}ms (avg={state.get('latency_stats',{}).get('avg',0):.0f}ms)")
+                    queue_alert(f"⚠️ Latency spike: {latency:.0f}ms", "health")
+            
+            # Proactive restart: if we've had N failures, restart before complete failure
+            if not ok:
+                proactive_threshold = get_learned_threshold(state, "proactive_restart_failures", 3)
+                if state.get("failures", 0) >= proactive_threshold:
+                    log(f"Proactive restart triggered (failures={state['failures']})")
+                    state, healed = heal_gateway(state)
+                    if healed:
+                        queue_alert("♻️ Proactive restart performed", "health")
+            
             # Model cost management
             use_cheap = should_use_cheap_model(state)
             if use_cheap and state.get("model_tier") != "cheap":
@@ -581,6 +784,8 @@ def main():
                 state["model_tier"] = "cheap"
                 state["current_model"] = cheap_model
                 log(f"Switched to cheap model: {cheap_model}")
+                # Record model attempt
+                state = record_model_outcome(state, cheap_model, ok)  # success = gateway healthy
             elif not use_cheap and state.get("model_tier") == "cheap":
                 state["model_tier"] = "default"
                 state["current_model"] = "default"
