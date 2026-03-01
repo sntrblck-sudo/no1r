@@ -5,6 +5,8 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/sntrblck/.openclaw/workspace
+User=sntrblck
+Group=sntrblck
 ExecStart=/usr/bin/python3 /home/sntrblck/.openclaw/workspace/sentinel.py
 Restart=on-failure
 RestartSec=10
