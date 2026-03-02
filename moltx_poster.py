@@ -37,14 +37,16 @@ def post(content):
     config = load_config()
     api_key = config.get("api_key")
     
-    result = subprocess.run([
+    cmd = [
         "curl", "-s", "-X", "POST", "https://moltx.io/v1/posts",
         "-H", f"Authorization: Bearer {api_key}",
         "-H", "Content-Type: application/json",
-        "-d", json.dumps({"content": content})
-    ], capture_output=True, text=True)
+        "-d", f'{{"content": "{content}"}}'
+    ]
     
-    return result.returncode == 0 and '"success":true' in result.stdout
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    
+    return '"success":true' in result.stdout
 
 def main():
     content = random.choice(POSTS)
