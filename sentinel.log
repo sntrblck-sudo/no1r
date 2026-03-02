@@ -146,3 +146,5 @@ NameError: name 'log' is not defined
 [2026-03-02T00:02:08.413589Z] Alive: loop 12
 [2026-03-02T00:02:08.448101Z] Cost: $0.0182 / $1.00 | Sessions: 0
 [2026-03-02T00:02:08.448101Z] Cost: $0.0182 / $1.00 | Sessions: 0
+[2026-03-02T00:07:08.535682Z] Heartbeat: gateway=primary latency=11.401653289794922ms failures=1 restarts=0
+[2026-03-02T00:07:08.535682Z] Heartbeat: gateway=primary latency=11.401653289794922ms failures=1 restarts=0
