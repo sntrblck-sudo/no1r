@@ -155,12 +155,14 @@ def main():
                 clear_alerts()
             
             # Periodic health report (every hour)
-            now = datetime.utcnow()
-            if now.minute == 0:  # Every hour
-                status_msg = check_sentinel_status()
-                if last_sent.get("health") != status_msg:
-                    send_message(status_msg)
-                    last_sent["health"] = status_msg
+            # Only enabled if ALERT_HOURLY_STATUS=1 is set in env
+            if os.environ.get("ALERT_HOURLY_STATUS") == "1":
+                now = datetime.utcnow()
+                if now.minute == 0:  # Every hour
+                    status_msg = check_sentinel_status()
+                    if last_sent.get("health") != status_msg:
+                        send_message(status_msg)
+                        last_sent["health"] = status_msg
             
             time.sleep(CHECK_INTERVAL)
             

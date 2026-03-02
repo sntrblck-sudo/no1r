@@ -374,3 +374,7 @@ See system logs and 'systemctl status openclaw-gateway.service' for details.
 [2026-03-02T15:59:18.927547Z] Cost: $0.0182 / $1.00 | Sessions: 0
 [2026-03-02T16:03:47.072485Z] Received signal 15, shutting down...
 [2026-03-02T16:03:47.072485Z] Received signal 15, shutting down...
+[2026-03-02T16:03:47.278419Z] === Sentinel v2 Starting ===
+[2026-03-02T16:03:47.278419Z] === Sentinel v2 Starting ===
+[2026-03-02T16:03:47.286907Z] Health server listening on port 18799
+[2026-03-02T16:03:47.286907Z] Health server listening on port 18799
