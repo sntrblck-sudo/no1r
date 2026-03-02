@@ -811,6 +811,12 @@ def main():
             
             # Health check with timeout protection
             ok, url, tier = check_gateway_health()
+
+            # If gateway is healthy again, reset failure counter and heal alerts
+            if ok and state.get("failures", 0) > 0:
+                log(f"Gateway healthy again, resetting failures (was {state['failures']})")
+                state["failures"] = 0
+                state.pop("last_heal_alert", None)
             
             # Get latency and record for learning
             latency, _ = get_gateway_latency(url) if ok else (None, False)
