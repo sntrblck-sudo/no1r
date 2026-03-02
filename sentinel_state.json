@@ -2,9 +2,20 @@
   "started": "2026-03-01T23:07:08.086520Z",
   "pid": 2693,
   "restarts": 0,
-  "failures": 1,
-  "last_learning_update": "2026-03-01T13:14:29.513514Z",
-  "method_preferences": {},
+  "failures": 2,
+  "last_learning_update": "2026-03-02T08:32:17.193529Z",
+  "method_preferences": {
+    "heal_gateway": {
+      "restart_daemon": {
+        "success": 0,
+        "total": 1
+      },
+      "restart_service": {
+        "success": 0,
+        "total": 1
+      }
+    }
+  },
   "cost_threshold": 1.0,
   "daily_costs": [
     0.0019725,
@@ -25,7 +36,6 @@
   },
   "latency_stats": {
     "samples": [
-      4.033088684082031,
       3.1299591064453125,
       8.127927780151367,
       4.544734954833984,
@@ -74,9 +84,10 @@
       22.01390266418457,
       3.9396286010742188,
       11.946678161621094,
-      3.0553340911865234
+      3.0553340911865234,
+      4.363536834716797
     ],
     "spike_threshold": 200,
-    "avg": 6.131196022033691
+    "avg": 6.137804985046387
   }
 }
