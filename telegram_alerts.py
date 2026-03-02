@@ -72,13 +72,18 @@ def read_alerts():
 
 
 def clear_alerts():
-    """Clear processed alerts"""
+    """Clear processed alerts (simple: delete the file)."""
     alert_file = Path(__file__).parent / ".pending_alerts.json"
-    
-    # Keep only unread alerts (for next run)
-    # For now, just clear the file after reading
-    # In production, you'd mark them as processed
-    pass
+    try:
+        if alert_file.exists():
+            alert_file.unlink()
+    except Exception:
+        # If we can't delete, degrade gracefully
+        try:
+            with open(alert_file, "w") as f:
+                json.dump([], f)
+        except Exception:
+            pass
 
 
 def check_sentinel_status():
