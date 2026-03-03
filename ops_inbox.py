@@ -57,12 +57,48 @@ def show_cron_summary() -> None:
     print(out)
 
 
+OPS_STATE_FILE = WORKSPACE / "ops_state.json"
+
+
+def write_state(state: dict) -> None:
+    try:
+        OPS_STATE_FILE.write_text(json.dumps(state, indent=2))
+    except Exception:
+        pass
+
+
 def main() -> None:
     ts = datetime.utcnow().isoformat() + "Z"
     print(f"◼️ ops_inbox snapshot @ {ts}\n")
+
+    # Gateway health via openclaw status | grep Gateway line
+    status_raw = run("openclaw status 2>&1 | head -15")
     show_gateway_status()
+
+    # Sentinel
     show_sentinel_health()
+
+    # Cron
     show_cron_summary()
+
+    # Cheap structured state for other tools
+    state = {
+        "timestamp": ts,
+        "gateway": "ok" if "Gateway         │ local" in status_raw and "reachable" in status_raw else "warn",
+        "sentinel": "ok",  # refined below
+        "cron": "ok",
+    }
+
+    # Refine sentinel status
+    try:
+        health_raw = run("curl -s http://localhost:18799/health || echo '{}' ")
+        h = json.loads(health_raw)
+        if not h.get("status") == "ok":
+            state["sentinel"] = "warn"
+    except Exception:
+        state["sentinel"] = "warn"
+
+    write_state(state)
 
 
 if __name__ == "__main__":
