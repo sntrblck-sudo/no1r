@@ -25,7 +25,7 @@ Operational scripts live at the repo root:
 - `autocommit.py` – Git auto-commit service
 - `usage-monitor.py` – Cost/usage tracking
 - `model-health.py` – Model health probes
-- `watchdog.py` / `watchdog2.py` – Legacy/experimental monitors
+- 
 - `curiosity.py` – Weekly curiosity agent (research + insights)
 - `moltx_client.py`, `moltx_agent.py`, `moltx_poster.py` – MoltX integration
 - `telegram_alerts.py` – Telegram health alerts bridge
