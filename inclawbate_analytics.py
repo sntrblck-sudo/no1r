@@ -44,24 +44,55 @@ def fetch_analytics() -> dict:
 
 
 def summarize(data: dict) -> str:
-    """Return a short human-readable summary string."""
+    """Return a short human-readable summary string.
+
+    Expected schema (2026-03-07):
+    {
+      "token": { ... },
+      "staking": { ... },
+      "platform": { ... },
+      "updated_at": "..."
+    }
+    """
+
     ts = datetime.utcnow().isoformat() + "Z"
-    summary_lines = [f"Inclawbate analytics snapshot @ {ts}"]
+    token = data.get("token", {})
+    staking = data.get("staking", {})
+    platform = data.get("platform", {})
 
-    # Common-style fields we might expect (adjust as we learn real schema)
-    total_staked = data.get("totalStaked") or data.get("tvl")
-    ubi_distributed = data.get("ubiDistributed") or data.get("totalUBI")
-    participants = data.get("participants") or data.get("stakers")
+    name = token.get("name") or "?"
+    symbol = token.get("symbol") or "?"
+    price = token.get("price_usd")
+    mcap = token.get("market_cap")
+    liq = token.get("liquidity_usd")
 
-    if total_staked is not None:
-        summary_lines.append(f"- Total staked: {total_staked}")
-    if ubi_distributed is not None:
-        summary_lines.append(f"- UBI distributed: {ubi_distributed}")
-    if participants is not None:
-        summary_lines.append(f"- Participants: {participants}")
+    total_stakers = staking.get("total_stakers")
+    tvl_usd = staking.get("tvl_usd")
+    est_apy = staking.get("estimated_apy")
+    daily_dist = staking.get("daily_distribution_rate")
 
-    if len(summary_lines) == 1:
-        summary_lines.append("- (Schema unknown; raw JSON stored in inclawbate_state.json)")
+    total_humans = platform.get("total_humans")
+    wallets_connected = platform.get("wallets_connected")
+
+    summary_lines = [
+        f"Inclawbate analytics snapshot @ {ts}",
+        "",
+        "Token (INCLAWNCH)",
+        f"- Name / Symbol: {name} / {symbol}",
+        f"- Price (USD): {price}" if price is not None else "- Price (USD): ?",
+        f"- Market cap (USD): {mcap}" if mcap is not None else "- Market cap (USD): ?",
+        f"- Liquidity (USD): {liq}" if liq is not None else "- Liquidity (USD): ?",
+        "",
+        "Staking",
+        f"- Total stakers: {total_stakers}",
+        f"- TVL (USD): {tvl_usd}",
+        f"- Estimated APY: {est_apy}",
+        f"- Daily distribution (CLAWS): {daily_dist}",
+        "",
+        "Platform",
+        f"- Total humans: {total_humans}",
+        f"- Wallets connected: {wallets_connected}",
+    ]
 
     return "\n".join(summary_lines)
 
