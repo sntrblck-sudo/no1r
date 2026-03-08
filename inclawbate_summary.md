@@ -1,10 +1,10 @@
-Inclawbate analytics snapshot @ 2026-03-08T01:04:12.818401Z
+Inclawbate analytics snapshot @ 2026-03-08T09:18:59.176666Z
 
 Token (INCLAWNCH)
 - Name / Symbol: INCLAWNCH / INCLAWNCH
-- Price (USD): 5.402e-05
-- Market cap (USD): 5378267
-- Liquidity (USD): 1482032.06
+- Price (USD): 5.313e-05
+- Market cap (USD): 5289078
+- Liquidity (USD): 1469210.06
 
 Staking
 - Total stakers: 0
@@ -13,5 +13,5 @@ Staking
 - Daily distribution (CLAWS): 200000000
 
 Platform
-- Total humans: 1061
+- Total humans: 1064
 - Wallets connected: 994

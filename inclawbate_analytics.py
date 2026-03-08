@@ -6,21 +6,27 @@ Read-only integration with Inclawbate analytics.
 - Calls the public analytics endpoint
 - Stores the JSON snapshot locally
 - Updates a short markdown summary for humans
+- Nudges attention_items.jsonl for the 'inclawbate' item
 
 Scope: analytics ONLY. No staking/unstaking or protocol actions.
 """
+
+from __future__ import annotations
 
 import json
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import urllib.request
 import urllib.error
 
-WORKSPACE = Path("/home/sntrblck/.openclaw/workspace")
+from no1r_core import WORKSPACE, log, epoch_now, load_json, save_json, iter_jsonl, write_jsonl
+
 OUT_FILE = WORKSPACE / "inclawbate_state.json"
 SUMMARY_FILE = WORKSPACE / "inclawbate_summary.md"
+ATTENTION_FILE = WORKSPACE / "attention_items.jsonl"
 
 API_URL = "https://www.inclawbate.com/api/inclawbate/analytics"
 
@@ -102,10 +108,41 @@ def write_summary_md(summary: str) -> None:
     SUMMARY_FILE.write_text(summary + "\n")
 
 
+def nudge_attention_for_inclawbate(now_epoch: int) -> None:
+    """Lightly bump urgency/importance for the 'inclawbate' attention item.
+
+    This is a tiny, reversible nudge to keep Inclawbate near the top of
+    the queue when analytics have just been refreshed.
+    """
+
+    if not ATTENTION_FILE.exists():
+        return
+
+    items: list[dict[str, Any]] = list(iter_jsonl(ATTENTION_FILE))
+    changed = False
+
+    for obj in items:
+        if obj.get("id") != "inclawbate":
+            continue
+        scores = obj.setdefault("scores", {})
+        # Gentle nudges, capped at 1.0
+        scores["urgency"] = min(float(scores.get("urgency", 0.4)) + 0.05, 1.0)
+        scores["importance"] = float(scores.get("importance", 0.95))  # keep high
+        obj["last_action_epoch"] = now_epoch
+        changed = True
+        break
+
+    if changed:
+        write_jsonl(ATTENTION_FILE, items)
+        log("Nudged attention for 'inclawbate' after analytics run", scope="inclawbate")
+
+
 def main() -> None:
+    log("Starting inclawbate analytics fetch", scope="inclawbate")
     try:
         data = fetch_analytics()
     except RuntimeError as e:
+        log(f"Error: {e}", scope="inclawbate")
         print(f"[inclawbate] Error: {e}", file=sys.stderr)
         sys.exit(1)
 
@@ -118,6 +155,10 @@ def main() -> None:
     summary = summarize(data)
     write_summary_md(summary)
 
+    now_epoch = epoch_now()
+    nudge_attention_for_inclawbate(now_epoch)
+
+    log("Inclawbate analytics updated (state + summary + attention)", scope="inclawbate")
     print(summary)
 
 

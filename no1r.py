@@ -19,23 +19,42 @@ from pathlib import Path
 from no1r_core import WORKSPACE, log
 
 
+def _run_script(name: str) -> int:
+    """Run a workspace-local Python script and return its exit code."""
+    script = WORKSPACE / name
+    if not script.exists():
+        log(f"Script not found: {name}", scope="registry")
+        return 1
+    proc = subprocess.run(["python3", name], cwd=WORKSPACE, check=False)
+    if proc.returncode != 0:
+        log(f"Script {name} exited with {proc.returncode}", scope="registry")
+    return proc.returncode
+
+
 def run_inclawbate_analytics() -> None:
+    """Run inclawbate analytics and then refresh attention tension."""
     log("Running inclawbate_analytics.py", scope="inclawbate")
-    subprocess.run(["python3", "inclawbate_analytics.py"], cwd=WORKSPACE, check=False)
+    rc = _run_script("inclawbate_analytics.py")
+    if rc != 0:
+        log("Skipping attention_tension due to inclawbate analytics failure", scope="registry")
+        return
+    # On success, refresh attention priorities
+    log("Running attention_tension.py after inclawbate analytics", scope="attention")
+    _run_script("attention_tension.py")
 
 
 def run_attention_tension() -> None:
     log("Running attention_tension.py", scope="attention")
-    subprocess.run(["python3", "attention_tension.py"], cwd=WORKSPACE, check=False)
+    _run_script("attention_tension.py")
 
 
 def run_ops_inbox() -> None:
     script = WORKSPACE / "ops_inbox.py"
     if not script.exists():
-        log("ops_inbox.py not found", scope="ops" )
+        log("ops_inbox.py not found", scope="ops")
         return
     log("Running ops_inbox.py", scope="ops")
-    subprocess.run(["python3", "ops_inbox.py"], cwd=WORKSPACE, check=False)
+    _run_script("ops_inbox.py")
 
 
 ACTIONS = {
