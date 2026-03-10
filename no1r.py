@@ -15,7 +15,25 @@ from __future__ import annotations
 import argparse
 import subprocess
 
-from no1r_core import WORKSPACE, log
+from no1r_core import WORKSPACE, log, now_utc, write_jsonl
+
+EVENTS_FILE = WORKSPACE / "events.jsonl"
+
+
+def _emit_event(event: dict) -> None:
+    """Append a single event to events.jsonl.
+
+    This is append-only and should be cheap; events are the canonical log of
+    what tasks ran and how they ended.
+    """
+
+    event = {
+        **event,
+        "ts": event.get("ts") or now_utc().isoformat() + "Z",
+        "schema_version": 1,
+    }
+    # append one-line JSON object
+    write_jsonl(EVENTS_FILE, [event])
 
 
 def _run_script(name: str) -> int:
@@ -23,10 +41,14 @@ def _run_script(name: str) -> int:
     script = WORKSPACE / name
     if not script.exists():
         log(f"Script not found: {name}", scope="registry")
+        _emit_event({"type": "task_result", "task": name, "result": "missing_script"})
         return 1
     proc = subprocess.run(["python3", name], cwd=WORKSPACE, check=False)
     if proc.returncode != 0:
         log(f"Script {name} exited with {proc.returncode}", scope="registry")
+        _emit_event({"type": "task_result", "task": name, "result": "error", "code": proc.returncode})
+    else:
+        _emit_event({"type": "task_result", "task": name, "result": "ok"})
     return proc.returncode
 
 
@@ -37,7 +59,6 @@ def run_inclawbate_analytics() -> None:
     if rc != 0:
         log("Skipping attention_tension due to inclawbate analytics failure", scope="registry")
         return
-    # On success, refresh attention priorities
     log("Running attention_tension.py after inclawbate analytics", scope="attention")
     _run_script("attention_tension.py")
 
@@ -77,6 +98,7 @@ def main() -> None:
     args = parser.parse_args()
 
     action = ACTIONS[args.task]
+    _emit_event({"type": "task_start", "task": args.task})
     action()
 
 

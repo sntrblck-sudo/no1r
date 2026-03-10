@@ -15,4 +15,4 @@
 
 - Inclawbate staking snapshot: tvl_usd=0, total_stakers=0.
 - Inclawbate staking currently empty (TVL=0, no stakers).
-- Inclawbate token price (last snapshot): 5.313e-05 USD.
+- Inclawbate token price (last snapshot): 6.65e-05 USD.
