@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import argparse
 import subprocess
-from pathlib import Path
 
 from no1r_core import WORKSPACE, log
 
@@ -49,18 +48,20 @@ def run_attention_tension() -> None:
 
 
 def run_ops_inbox() -> None:
-    script = WORKSPACE / "ops_inbox.py"
-    if not script.exists():
-        log("ops_inbox.py not found", scope="ops")
-        return
     log("Running ops_inbox.py", scope="ops")
     _run_script("ops_inbox.py")
+
+
+def run_patterns_mirror() -> None:
+    log("Running patterns_mirror.py", scope="patterns")
+    _run_script("patterns_mirror.py")
 
 
 ACTIONS = {
     "inclawbate-analytics": run_inclawbate_analytics,
     "attention-tension": run_attention_tension,
     "ops-inbox": run_ops_inbox,
+    "patterns-mirror": run_patterns_mirror,
 }
 
 

@@ -1,9 +1,7 @@
-# NEXT_3
+# NEXT_3 (parked)
 
-Keep this to the 1–3 things you care about *today*.
-At the start of each day, clear this list and add up to 3 fresh items.
-When energy is low, look at this file and ignore everything else.
+This file is currently **not in active use**.
 
-1. [ ] Errand: 
-2. [ ] Small task: 
-3. [ ] Rest / fun: 
+It was an experiment for keeping 1–3 daily focus items (errand, small task, rest/fun). For now, we’ve dropped this pattern to reduce overhead.
+
+You can reuse or repurpose this file later if you ever want a tiny focus list again, but nothing in the system depends on it.
