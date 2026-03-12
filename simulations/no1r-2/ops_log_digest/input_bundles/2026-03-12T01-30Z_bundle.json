@@ -1,0 +1,143 @@
+{
+  "ts_collected": "2026-03-12T01:30:42.687653+00:00",
+  "sentinel_log_tail": "[2026-03-10T23:31:43.119934Z] === Sentinel v2 Starting ===\n[2026-03-10T23:31:43.122093Z] Health server listening on port 18799\n[2026-03-10T23:33:54.305690Z] Health server failed: [Errno 98] Address already in use\n[2026-03-10T23:33:54.308629Z] === Sentinel v2 Starting ===\n[2026-03-10T23:33:54.308896Z] Existing Sentinel instance detected (pid=3238), exiting\n[2026-03-10T23:34:06.582912Z] Received signal 15, shutting down...\n[2026-03-10T23:34:11.716313Z] === Sentinel v2 Starting ===\n[2026-03-10T23:34:11.719895Z] Health server listening on port 18799\n[2026-03-11T00:04:11.641051Z] Received signal 15, shutting down...\n[2026-03-11T00:52:54.570825Z] === Sentinel v2 Starting ===\n[2026-03-11T00:52:54.570382Z] Health server listening on port 18799\n[2026-03-11T01:02:29.789579Z] Received signal 15, shutting down...\n[2026-03-11T02:00:43.349826Z] === Sentinel v2 Starting ===\n[2026-03-11T02:00:43.351864Z] Health server listening on port 18799\n[2026-03-11T02:17:06.178507Z] Received signal 15, shutting down...\n[2026-03-11T23:56:05.493679Z] Health server listening on port 18799\n[2026-03-11T23:56:05.493709Z] === Sentinel v2 Starting ===\n[2026-03-12T00:28:18.697150Z] === Sentinel v2 Starting ===\n[2026-03-12T00:28:18.699368Z] Health server listening on port 18799\n[2026-03-12T01:17:13.947543Z] Received signal 15, shutting down...",
+  "sentinel_state": {
+    "started": "2026-03-12T00:28:18.700838Z",
+    "pid": 568,
+    "restarts": 0,
+    "failures": 0,
+    "last_learning_update": "2026-03-11T16:05:33.685568Z",
+    "method_preferences": {
+      "heal_gateway": {
+        "restart_daemon": {
+          "success": 0,
+          "total": 2
+        },
+        "restart_service": {
+          "success": 0,
+          "total": 8
+        },
+        "kill_gateway": {
+          "success": 0,
+          "total": 6
+        }
+      }
+    },
+    "cost_threshold": 0.38742048900000015,
+    "daily_costs": [
+      0.0019725,
+      0.00189375,
+      0.00222375,
+      0.00176875,
+      0.00111125,
+      0.0017487499999999999,
+      0.00157125,
+      0.00170625,
+      0.00239875,
+      0.0018174999999999999
+    ],
+    "learned_thresholds": {
+      "model_switch_pct": 70,
+      "alert_pct": 50,
+      "proactive_restart_failures": 3
+    },
+    "latency_stats": {
+      "samples": [
+        5.808115005493164,
+        4.849672317504883,
+        6.968975067138672,
+        6.111621856689453,
+        14.89710807800293,
+        16.23702049255371,
+        4.028081893920898,
+        4.233598709106445,
+        6.87718391418457,
+        5.426883697509766,
+        4.65083122253418,
+        4.499912261962891,
+        3.894329071044922,
+        4.435062408447266,
+        21.70872688293457,
+        12.620687484741211,
+        3.6733150482177734,
+        5.19871711730957,
+        19.868135452270508,
+        10.689735412597656,
+        3.9107799530029297,
+        12.132644653320312,
+        4.370212554931641,
+        1.6160011291503906,
+        2.145528793334961,
+        3.8995742797851562,
+        3.8890838623046875,
+        4.012823104858398,
+        13.69023323059082,
+        4.282474517822266,
+        7.72857666015625,
+        28.391361236572266,
+        13.025283813476562,
+        15.658378601074219,
+        13.696670532226562,
+        5.923271179199219,
+        1.1620521545410156,
+        1.1954307556152344,
+        4.253149032592773,
+        3.154754638671875,
+        1.3790130615234375,
+        4.032135009765625,
+        3.8535594940185547,
+        0.9355545043945312,
+        2.243518829345703,
+        2.751588821411133,
+        1.2505054473876953,
+        11.153221130371094,
+        2.911806106567383,
+        2.6247501373291016
+      ],
+      "spike_threshold": 200,
+      "avg": 6.959033012390137
+    }
+  },
+  "events_tail": [],
+  "ops_state": {
+    "gateway": "ok",
+    "sentinel": "r",
+    "last_check": "2026-03-12T00:18:56.865364Z",
+    "safety_metrics": {
+      "cost_today": 0.0182,
+      "cost_threshold": 0.38742048900000015,
+      "cost_pct": 4.7,
+      "gateway_failures": 0,
+      "heal_blocked": false,
+      "latency_avg_ms": 8.1,
+      "latency_spike": false
+    },
+    "alerts_24h": {
+      "cost": 0,
+      "health": 0,
+      "latency": 0
+    }
+  },
+  "cron_status": "ID                                   Name                     Schedule                         Next       Last       Status    Target    Agent ID   Model               \n3d95d1a1-0aa3-4534-bd6c-e9369f78a567 safety-check-monitoring  every 15m                        in 49m     11m ago    error     isolated  main       -",
+  "system_metrics": {
+    "disk": {
+      "percent_used": 1.32,
+      "notes": "workspace mount /home/thera/.openclaw/workspace"
+    },
+    "memory": {
+      "percent_used": 16.63,
+      "notes": "from /proc/meminfo"
+    },
+    "cpu": {
+      "load_avg": [
+        0.1162109375,
+        0.19189453125,
+        0.16796875
+      ],
+      "notes": "os.getloadavg"
+    }
+  },
+  "recent_errors": [
+    "[2026-03-10T23:33:54.305690Z] Health server failed: [Errno 98] Address already in use"
+  ]
+}
