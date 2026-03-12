@@ -14,7 +14,7 @@ TMP_REPORT="$REPORT_FILE.tmp"
 python3 "$ROOT/scripts/build_ops_log_bundle.py" > "$BUNDLE_FILE"
 BUNDLE_JSON="$(cat "$BUNDLE_FILE")"
 
-read -r -d '' PROMPT <<EOF
+PROMPT=$(cat <<EOF
 You are no1r-2, an ops analyst running entirely on local infrastructure. You only analyze data and NEVER take direct actions.
 
 INPUT (OpsLogBundle JSON):
@@ -41,6 +41,7 @@ OUTPUT: A single JSON object named SimulationReport with exactly these fields:
 
 No extra prose or markdown—JSON only.
 EOF
+)
 
 if command -v ollama >/dev/null 2>&1; then
   ollama run llama3.1 "$PROMPT" > "$TMP_REPORT"
@@ -53,11 +54,16 @@ python3 - "$TMP_REPORT" "$REPORT_FILE" <<'PY'
 import json, sys, pathlib
 src = pathlib.Path(sys.argv[1])
 dst = pathlib.Path(sys.argv[2])
-with src.open() as f:
-    data = json.load(f)
-if data.get("simulation_type") != "ops_log_digest_v0.1":
-    raise SystemExit("invalid simulation_type")
-dst.write_text(json.dumps(data, indent=2))
+text = src.read_text(encoding='utf-8')
+start = text.find('{')
+end = text.rfind('}')
+if start == -1 or end == -1:
+    raise SystemExit('no JSON object found')
+json_blob = text[start:end+1]
+data = json.loads(json_blob)
+if data.get('simulation_type') != 'ops_log_digest_v0.1':
+    raise SystemExit('invalid simulation_type')
+dst.write_text(json.dumps(data, indent=2), encoding='utf-8')
 src.unlink()
 PY
 
