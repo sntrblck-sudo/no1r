@@ -300,14 +300,23 @@ def save_state(state):
 
 
 def get_gateway_usage():
-    """Get current API usage from gateway"""
-    try:
-        req = urllib.request.Request(f"{GATEWAY_URL}/api/status")
-        r = urllib.request.urlopen(req, timeout=10)
-        data = json.loads(r.read().decode())
-        return data
-    except:
-        return None
+    """Get current API usage from gateway with retries/backoff"""
+    attempts = 0
+    max_attempts = 3
+    backoff = 1.0
+    while attempts < max_attempts:
+        attempts += 1
+        try:
+            req = urllib.request.Request(f"{GATEWAY_URL}/api/status")
+            r = urllib.request.urlopen(req, timeout=10)
+            data = json.loads(r.read().decode())
+            return data
+        except Exception as e:
+            if attempts < max_attempts:
+                time.sleep(backoff)
+                backoff *= 2
+                continue
+            return None
 
 
 def should_use_cheap_model(state):
