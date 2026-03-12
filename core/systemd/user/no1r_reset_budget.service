@@ -1,0 +1,7 @@
+[Unit]
+Description=Reset no1r daily budget (simulation)
+
+[Service]
+Type=oneshot
+ExecStart=/home/sntrblck/.openclaw/workspace/scripts/reset_daily_budget.sh
+User=sntrblck
