@@ -1,0 +1,35 @@
+{
+  "simulation_type": "ops_log_digest_v0.1",
+  "timestamp": "2026-03-12T01:04:41.538570+00:00",
+  "situation": "Sentinel v2 has been running with intermittent restarts and failures to start due to address already in use error. The sentinel has been restarted multiple times, with the latest successful start at 2026-03-12T00:28:18.700838Z. The ops system is running with normal safety metrics.",
+  "observed_signals": [
+    "Address already in use error",
+    "Sentinel v2 restarts",
+    "Intermittent health server failures"
+  ],
+  "analysis": "The sentinel has been experiencing restarts and failures to start due to the address already in use error. This error is likely caused by the sentinel failing to properly shut down before restarting. The ops system is running with normal safety metrics, but the sentinel's behavior is causing tension.",
+  "anomalies_or_tensions": [
+    "Sentinel v2 restarts",
+    "Intermittent health server failures",
+    "Address already in use error"
+  ],
+  "hypotheses": [
+    "The sentinel's failure to properly shut down is causing the address already in use error.",
+    "The sentinel's restarts are being triggered by the address already in use error.",
+    "The sentinel's health server is experiencing intermittent failures."
+  ],
+  "uncertainties": [
+    "The root cause of the address already in use error is unknown.",
+    "The frequency and timing of the sentinel's restarts are unknown.",
+    "The impact of the sentinel's health server failures on the overall ops system is unknown."
+  ],
+  "recommended_classification": "watch",
+  "watch_items": [
+    "Sentinel v2 restarts",
+    "Intermittent health server failures",
+    "Address already in use error"
+  ],
+  "notes_for_main_no1r": "Review the sentinel's logs for any clues on why the address already in use error is occurring. Investigate the sentinel's shutdown process to determine if it is properly shutting down before restarting.",
+  "confidence": "medium",
+  "safety_note": "Simulation only. No external actions taken."
+}
