@@ -1,0 +1,57 @@
+{
+  "simulation_type": "contract_work_sim",
+  "schema_version": "0.1",
+  "timestamp": "2026-03-12T13-19-37Z",
+  "batch_id": "batch_2026_03_12_002",
+  "job_id": "job_2026_03_12_006",
+  "situation": "Analyze supplied CSV of user signups to identify 3 cohorts; CSV will be provided",
+  "analysis": "Automated synthetic run",
+  "hypotheses": [
+    "client unclear about scope"
+  ],
+  "uncertainties": [
+    "missing data"
+  ],
+  "recommended_classification": "deferred_pending_info",
+  "watch_items": [],
+  "notes_for_main_no1r": "Simulated run. No external actions",
+  "confidence": "med",
+  "safety_note": "simulation only",
+  "job_outcome": {
+    "decision": "defer",
+    "decision_reason": "auto decision based on clarity+reward",
+    "blocking_issues": [
+      "provide CSV"
+    ],
+    "scope": {
+      "assumptions": [
+        "data provided on time"
+      ],
+      "out_of_scope": [
+        "integration"
+      ],
+      "estimated_steps": [
+        "intake",
+        "work",
+        "deliver"
+      ],
+      "deliverable_format": "notebook+charts"
+    },
+    "deliverable_summary": "Simulated deliverable summary",
+    "self_score": {
+      "clarity": 7,
+      "completeness": 6,
+      "honesty": 9,
+      "usefulness": 7,
+      "critique_note": "Sim only"
+    },
+    "fake_payment_record": {
+      "job_id": "job_2026_03_12_006",
+      "reward_fake_usd": 250,
+      "status": "deferred_simulated"
+    },
+    "outcome_tags": [
+      "unclear_scope"
+    ]
+  }
+}

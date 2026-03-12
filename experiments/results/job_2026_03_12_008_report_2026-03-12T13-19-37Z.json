@@ -1,0 +1,44 @@
+{
+  "simulation_type": "contract_work_sim",
+  "schema_version": "0.1",
+  "timestamp": "2026-03-12T13-19-37Z",
+  "batch_id": "batch_2026_03_12_002",
+  "job_id": "job_2026_03_12_008",
+  "situation": "Quick advisory: realistic pricing for an indie info-product in education",
+  "analysis": "Automated synthetic run",
+  "hypotheses": [
+    "client unclear about scope"
+  ],
+  "uncertainties": [
+    "missing success criteria"
+  ],
+  "recommended_classification": "unclear_scope",
+  "watch_items": [],
+  "notes_for_main_no1r": "Simulated run. No external actions",
+  "confidence": "med",
+  "safety_note": "simulation only",
+  "job_outcome": {
+    "decision": "decline",
+    "decision_reason": "auto decision based on clarity+reward",
+    "blocking_issues": [
+      "clarify deliverables"
+    ],
+    "scope": null,
+    "deliverable_summary": "Simulated deliverable summary",
+    "self_score": {
+      "clarity": 7,
+      "completeness": 6,
+      "honesty": 9,
+      "usefulness": 7,
+      "critique_note": "Sim only"
+    },
+    "fake_payment_record": {
+      "job_id": "job_2026_03_12_008",
+      "reward_fake_usd": 90,
+      "status": "unpaid_simulated"
+    },
+    "outcome_tags": [
+      "unclear_scope"
+    ]
+  }
+}
