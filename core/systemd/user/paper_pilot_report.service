@@ -1,0 +1,7 @@
+[Unit]
+Description=Summarize paper trading pilot
+
+[Service]
+Type=oneshot
+ExecStart=/home/sntrblck/.openclaw/workspace/scripts/summarize_paper_pilot.sh
+User=sntrblck
