@@ -1,0 +1,7 @@
+[Unit]
+Description=no1r heal monitor service
+
+[Service]
+Type=oneshot
+ExecStart=/home/sntrblck/.openclaw/workspace/scripts/monitor_no1r_heal.sh
+User=sntrblck
