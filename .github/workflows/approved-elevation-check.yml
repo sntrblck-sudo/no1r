@@ -1,0 +1,17 @@
+name: Require approved elevations for production posts
+on:
+  push:
+    branches: [ production-posts ]
+
+jobs:
+  check-approved:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure approved elevations exist
+        run: |
+          if [ -z "$(ls exchange/approved 2>/dev/null || true)" ]; then
+            echo "No approved elevation files found in exchange/approved. Aborting deployment." >&2
+            exit 1
+          fi
+          echo "Approved elevations present."
