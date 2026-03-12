@@ -126,6 +126,21 @@ def log(msg):
         pass
 
 
+def log_event(event_type, **fields):
+    """Emit a machine-readable event line for ingestion."""
+    try:
+        evt = {
+            "ts": datetime.utcnow().isoformat() + "Z",
+            "type": event_type,
+            **fields,
+        }
+        with open(LOG_FILE, "a") as f:
+            f.write("EVENT " + json.dumps(evt, sort_keys=True) + "\n")
+            f.flush()
+    except Exception:
+        pass
+
+
 
 def rotate_logs(log_path):
     """Rotate log files"""
@@ -248,7 +263,9 @@ class HealthHandler(BaseHTTPRequestHandler):
                 "uptime": uptime,
                 "failures": state.get("failures", 0),
                 "restarts": state.get("restarts", 0),
-                "cost_today": sum(state.get("daily_costs", []))
+                "cost_today": sum(state.get("daily_costs", [])),
+                "model_tier": state.get("model_tier", "default"),
+                "heal_permission_blocked": state.get("heal_permission_blocked", False)
             }
             self.wfile.write(json.dumps(resp).encode())
         elif self.path == "/status":
@@ -671,14 +688,15 @@ def heal_gateway(state):
 
     for method in methods:
         log(f"Attempting heal via {method}...")
+        log_event("heal_attempt", method=method)
         success = False
 
         if method == "kill_gateway":
             try:
                 # Find and kill gateway process, then restart via systemd
-                rc_kill = os.system("pkill -f 'openclaw-gateway'")
+                rc_kill = os.system("sudo pkill -f 'openclaw-gateway'")
                 time.sleep(2)
-                rc_start = os.system("systemctl start openclaw-gateway")
+                rc_start = os.system("sudo systemctl start openclaw-gateway")
                 time.sleep(5)
                 ok, _, _ = check_gateway_health()
                 success = ok
@@ -691,7 +709,7 @@ def heal_gateway(state):
 
         elif method == "restart_service":
             try:
-                rc_restart = os.system("systemctl restart openclaw-gateway")
+                rc_restart = os.system("sudo systemctl restart openclaw-gateway")
                 time.sleep(5)
                 ok, _, _ = check_gateway_health()
                 success = ok
@@ -706,6 +724,7 @@ def heal_gateway(state):
 
         if success:
             log(f"Heal succeeded via {method}")
+            log_event("heal_success", method=method)
             state["restarts"] += 1
             return state, True
 
@@ -714,6 +733,7 @@ def heal_gateway(state):
 
     if permission_blocked:
         log("Heal failed due to permission issues with systemctl; disabling further heal attempts until manual reset")
+        log_event("heal_permission_blocked")
         state["heal_permission_blocked"] = True
         queue_alert(
             "⚠️ Sentinel could not restart openclaw-gateway due to permission requirements. Heal attempts disabled until manual intervention.",
