@@ -1,0 +1,176 @@
+# ─────────────────────────────────────────────
+#  no1r — shared memory
+#  format  : yaml
+#  sync    : github (pull-before-read, commit-after-write)
+#  schema  : v1.0
+# ─────────────────────────────────────────────
+
+meta:
+  schema_version: "1.0"
+  created: ""           # ISO 8601 — set on first init
+  last_sync: ""         # updated by whichever instance last committed
+  lock: null            # instance id that holds write lock, null if free
+
+
+# ─────────────────────────────────────────────
+#  INSTANCE STATE
+#  each instance owns its namespace exclusively
+# ─────────────────────────────────────────────
+
+no1r_1:
+  id: "no1r-1"
+  status: idle          # idle | running | paused | error
+  last_active: ""
+  current_task:
+    id: null
+    description: null
+    started: null
+    tool: null          # active tool/api being used
+  session:
+    run_count: 0        # total runs this instance has completed
+    token_spend: 0      # cumulative tokens this session
+    api_calls: 0
+  health:
+    last_judgment_score: null   # 0–10, last pre-action judgment result
+    consecutive_errors: 0
+    last_error: null
+
+no1r_2:
+  id: "no1r-2"
+  status: idle
+  last_active: ""
+  current_task:
+    id: null
+    description: null
+    started: null
+    tool: null
+  session:
+    run_count: 0
+    token_spend: 0
+    api_calls: 0
+  health:
+    last_judgment_score: null
+    consecutive_errors: 0
+    last_error: null
+
+
+# ─────────────────────────────────────────────
+#  EXCHANGE
+#  the shared channel — both instances read/write here
+#  convention: sender writes, receiver clears after processing
+# ─────────────────────────────────────────────
+
+exchange:
+
+  # outbox: no1r-1 → no1r-2
+  no1r_1_to_no1r_2:
+    message_id: null
+    type: null          # task_handoff | result | flag | query | ack
+    payload: null
+    sent_at: null
+    read: false
+
+  # outbox: no1r-2 → no1r-1
+  no1r_2_to_no1r_1:
+    message_id: null
+    type: null
+    payload: null
+    sent_at: null
+    read: false
+
+  # shared flags either instance can set for the other to observe
+  flags:
+    pause_requested: false      # request the other instance to pause
+    sync_required: false        # signal that memory may be stale
+    operator_alert: false       # surface to operator dashboard
+
+
+# ─────────────────────────────────────────────
+#  SHARED KNOWLEDGE
+#  facts, conclusions, and context both instances can draw from
+#  neither instance should overwrite the other's entries —
+#  append only, keyed by instance + timestamp
+# ─────────────────────────────────────────────
+
+knowledge:
+
+  # persistent facts that survive session resets
+  facts: []
+    # - id: ""
+    #   source: "no1r-1 | no1r-2 | operator"
+    #   content: ""
+    #   confidence: 1.0    # 0.0–1.0
+    #   created: ""
+    #   expires: null      # ISO date or null for permanent
+
+  # conclusions drawn from completed tasks
+  conclusions: []
+    # - id: ""
+    #   source: ""
+    #   task_ref: ""
+    #   summary: ""
+    #   created: ""
+
+  # entities encountered (users, contracts, accounts, tools)
+  entities: []
+    # - id: ""
+    #   type: "user | contract | tool | platform"
+    #   label: ""
+    #   notes: ""
+    #   trust_level: null   # 0.0–1.0, null = unrated
+    #   last_seen: ""
+
+
+# ─────────────────────────────────────────────
+#  TASK REGISTRY
+#  log of completed and in-progress tasks across both instances
+#  append-only — do not edit past entries
+# ─────────────────────────────────────────────
+
+tasks: []
+  # - id: ""
+  #   instance: "no1r-1 | no1r-2"
+  #   description: ""
+  #   status: "pending | running | complete | failed | escalated"
+  #   started: ""
+  #   completed: null
+  #   result_summary: null
+  #   judgment_score: null
+  #   token_cost: 0
+  #   escalated: false
+  #   escalation_reason: null
+
+
+# ─────────────────────────────────────────────
+#  OPERATOR NOTES
+#  human-writable section — instances read but do not overwrite
+#  use this to leave standing instructions, context, or corrections
+# ─────────────────────────────────────────────
+
+operator:
+  standing_instructions: []
+    # - "prefer posting during UTC 08:00–22:00"
+    # - "do not interact with accounts flagged untrusted"
+
+  corrections: []
+    # - timestamp: ""
+    #   note: ""
+
+  budget:
+    daily_token_limit: null     # set a number or leave null for unlimited
+    daily_api_call_limit: null
+    alert_threshold: 0.8        # alert operator when budget % hit
+
+
+# ─────────────────────────────────────────────
+#  AUDIT TRAIL
+#  lightweight record of significant events
+#  append-only — written by instances, readable by operator
+# ─────────────────────────────────────────────
+
+audit: []
+  # - timestamp: ""
+  #   instance: ""
+  #   event: ""           # action_taken | judgment_block | escalation | error | sync | operator_override
+  #   detail: ""
+  #   judgment_score: null
