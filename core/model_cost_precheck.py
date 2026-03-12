@@ -2,18 +2,7 @@
 Estimate token usage roughly and compute cost based on model pricing table.
 """
 from typing import List
-import hashlib
-
-# minimal pricing table (USD per 1M tokens input+output)
 from core.model_registry import PRICING
-
-# pricing (imported from core.model_registry)
-
-    'gpt-4.1-nano': 0.10+0.40,
-    'gpt-4o-mini': 0.15+0.60,
-    'gpt-4.1-mini': 0.40+1.60,
-    'gpt-4.1': 2.00+8.00,
-}
 
 def rough_token_count(messages: List[dict]) -> int:
     # extremely coarse heuristic: 1 token per 4 chars
