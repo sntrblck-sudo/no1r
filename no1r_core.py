@@ -21,7 +21,7 @@ import time
 from datetime import datetime, timezone
 
 # Workspace root
-WORKSPACE = Path("/home/sntrblck/.openclaw/workspace").resolve()
+WORKSPACE = Path(__file__).resolve().parent
 
 
 # ---------- time helpers ----------

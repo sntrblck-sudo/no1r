@@ -5,8 +5,12 @@ import json
 import os
 from datetime import datetime
 
-LOG_FILE = "/home/sntrblck/.openclaw/workspace/logs/model-health.log"
-STATE_FILE = "/home/sntrblck/.openclaw/workspace/.model-health-state.json"
+from pathlib import Path
+
+HOME = Path.home()
+WORKSPACE = HOME / ".openclaw" / "workspace"
+LOG_FILE = WORKSPACE / "logs" / "model-health.log"
+STATE_FILE = WORKSPACE / ".model-health-state.json"
 
 def log(msg):
     """Log to file"""

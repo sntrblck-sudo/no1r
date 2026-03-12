@@ -15,7 +15,7 @@ import subprocess
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-WORKSPACE = Path("/home/sntrblck/.openclaw/workspace")
+WORKSPACE = Path(__file__).resolve().parent
 OPS_STATE_FILE = WORKSPACE / "ops_state.json"
 JUDGEMENTS_FILE = WORKSPACE / "judgements.jsonl"
 REPORT_FILE = WORKSPACE / "ops_daily_report.md"

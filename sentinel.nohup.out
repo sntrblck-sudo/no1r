@@ -18,3 +18,5 @@
   now = datetime.utcnow()
 /home/thera/.openclaw/workspace/sentinel.py:427: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
   today = datetime.utcnow().isoformat()[:10]
+/home/thera/.openclaw/workspace/sentinel.py:243: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  uptime = str(datetime.utcnow() - datetime.fromisoformat(started.replace("Z", "+00:00")))

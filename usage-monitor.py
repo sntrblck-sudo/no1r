@@ -4,8 +4,11 @@ import subprocess
 import json
 import os
 
-CONFIG_FILE = "/home/sntrblck/.openclaw/openclaw.json"
-STATE_FILE = "/home/sntrblck/.openclaw/workspace/.usage-monitor-state.json"
+from pathlib import Path
+
+HOME = Path.home()
+CONFIG_FILE = str(HOME / ".openclaw/openclaw.json")
+STATE_FILE = str(HOME / ".openclaw/workspace/.usage-monitor-state.json")
 THRESHOLD = 60  # Switch at 60% usage (40% remaining)
 
 def get_usage():
