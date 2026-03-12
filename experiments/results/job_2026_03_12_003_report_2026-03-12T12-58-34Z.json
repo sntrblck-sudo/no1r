@@ -1,0 +1,45 @@
+{
+  "simulation_type": "contract_work_sim",
+  "schema_version": "0.1",
+  "timestamp": "2026-03-12T12-58-34Z",
+  "batch_id": "batch_2026_03_12_001",
+  "job_id": "job_2026_03_12_003",
+  "situation": "Analyze a CSV of user events and provide top 5 engagement drivers. CSV not yet provided.",
+  "analysis": "Read brief; assessed clarity and risk.",
+  "hypotheses": [
+    "client values speed over depth"
+  ],
+  "uncertainties": [
+    "missing CSV",
+    "scope boundaries"
+  ],
+  "recommended_classification": "unclear_scope",
+  "watch_items": [],
+  "notes_for_main_no1r": "Simulated run. No external actions taken.",
+  "confidence": "med",
+  "safety_note": "simulation only",
+  "job_outcome": {
+    "decision": "decline",
+    "decision_reason": "Some scope missing, ask for CSV",
+    "blocking_issues": [
+      "provide CSV"
+    ],
+    "scope": null,
+    "deliverable_summary": "Short summary of deliverable structure.",
+    "self_score": {
+      "clarity": 5,
+      "completeness": 4,
+      "honesty": 9,
+      "usefulness": 7,
+      "critique_note": "Could improve data depth"
+    },
+    "fake_payment_record": {
+      "job_id": "job_2026_03_12_003",
+      "reward_fake_usd": 250,
+      "status": "unpaid_simulated"
+    },
+    "outcome_tags": [
+      "unclear_scope"
+    ]
+  }
+}

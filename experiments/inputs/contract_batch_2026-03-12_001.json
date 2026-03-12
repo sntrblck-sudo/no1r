@@ -1,0 +1,44 @@
+[
+  {
+    "job_id": "job_2026_03_12_001",
+    "task_type": "research",
+    "description": "Provide a 1-page market summary on niche productivity apps for freelancers.",
+    "deadline": "3 days",
+    "complexity": "low",
+    "reward_fake_usd": 150,
+    "clarity_level": "clear",
+    "risk_tags": [],
+    "expected_output": "1-page structured summary with 5 competitors and suggested positioning",
+    "client_type": "solo_founder",
+    "prior_context": null,
+    "batch_id": "batch_2026_03_12_001"
+  },
+  {
+    "job_id": "job_2026_03_12_002",
+    "task_type": "writing",
+    "description": "Write a long-form guide on 'How to monetize a hobby blog' with SEO-optimized sections.",
+    "deadline": "2 weeks",
+    "complexity": "high",
+    "reward_fake_usd": 300,
+    "clarity_level": "partial",
+    "risk_tags": ["scope_creep"],
+    "expected_output": "Outline + 1500-word draft",
+    "client_type": "startup",
+    "prior_context": null,
+    "batch_id": "batch_2026_03_12_001"
+  },
+  {
+    "job_id": "job_2026_03_12_003",
+    "task_type": "data_analysis",
+    "description": "Analyze a CSV of user events and provide top 5 engagement drivers. CSV not yet provided.",
+    "deadline": "1 week",
+    "complexity": "med",
+    "reward_fake_usd": 250,
+    "clarity_level": "vague",
+    "risk_tags": ["underspecified"],
+    "expected_output": "Top 5 drivers with charts",
+    "client_type": "unknown",
+    "prior_context": null,
+    "batch_id": "batch_2026_03_12_001"
+  }
+]

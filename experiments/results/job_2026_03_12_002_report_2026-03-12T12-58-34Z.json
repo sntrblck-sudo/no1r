@@ -1,0 +1,60 @@
+{
+  "simulation_type": "contract_work_sim",
+  "schema_version": "0.1",
+  "timestamp": "2026-03-12T12-58-34Z",
+  "batch_id": "batch_2026_03_12_001",
+  "job_id": "job_2026_03_12_002",
+  "situation": "Write a long-form guide on 'How to monetize a hobby blog' with SEO-optimized sections.",
+  "analysis": "Read brief; assessed clarity and risk.",
+  "hypotheses": [
+    "client values speed over depth"
+  ],
+  "uncertainties": [
+    "missing CSV",
+    "scope boundaries"
+  ],
+  "recommended_classification": "unclear_scope",
+  "watch_items": [
+    "scope_creep"
+  ],
+  "notes_for_main_no1r": "Simulated run. No external actions taken.",
+  "confidence": "med",
+  "safety_note": "simulation only",
+  "job_outcome": {
+    "decision": "defer",
+    "decision_reason": "Partial brief; need success criteria",
+    "blocking_issues": [
+      "clarify deliverables"
+    ],
+    "scope": {
+      "assumptions": [
+        "research limited to public sources"
+      ],
+      "out_of_scope": [
+        "drafting full site content"
+      ],
+      "estimated_steps": [
+        "intake",
+        "draft",
+        "review"
+      ],
+      "deliverable_format": "pdf"
+    },
+    "deliverable_summary": "Short summary of deliverable structure.",
+    "self_score": {
+      "clarity": 5,
+      "completeness": 4,
+      "honesty": 9,
+      "usefulness": 7,
+      "critique_note": "Could improve data depth"
+    },
+    "fake_payment_record": {
+      "job_id": "job_2026_03_12_002",
+      "reward_fake_usd": 300,
+      "status": "deferred_simulated"
+    },
+    "outcome_tags": [
+      "scope_creep_risk"
+    ]
+  }
+}
