@@ -1,6 +1,3 @@
 /home/thera/.openclaw/workspace/autocommit.py:20: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
   timestamp = datetime.utcnow().isoformat() + "Z"
-[2026-03-11T23:59:35.940328Z] === Autocommit Starting ===
-[2026-03-11T23:59:36.332690Z] Committed: openclaw/workspace-state.json, AGENTS.md, CONCEPTS.md, DISPOSITION.md, IDENTITY.md (+73 more)
-/home/thera/.openclaw/workspace/autocommit.py:123: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  now = datetime.utcnow()
+[2026-03-12T00:28:49.134050Z] === Autocommit Starting ===
