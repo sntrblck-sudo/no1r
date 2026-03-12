@@ -67,5 +67,16 @@ dst.write_text(json.dumps(data, indent=2), encoding='utf-8')
 src.unlink()
 PY
 
+cd "$ROOT"
+git add "$BUNDLE_FILE" "$REPORT_FILE"
+if git diff --cached --quiet; then
+  git reset HEAD "$BUNDLE_FILE" "$REPORT_FILE" >/dev/null 2>&1 || true
+else
+  git commit -m "ops_log_digest: add report $TS" >/dev/null 2>&1 || true
+  if ! git push origin master >/dev/null 2>&1; then
+    echo "[warn] git push failed (check credentials)" >&2
+  fi
+fi
+
 echo "Saved bundle to $BUNDLE_FILE"
 echo "Saved report to $REPORT_FILE"
